@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IRRF sobre Distribuição de Lucros — JBC Micro Sistemas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --brand-01: #990024;
+    --brand-02: #CC143F;
+    --brand-03: #FF003C;
+
+    --dark-3:   #2B2E33;
+    --dark-2:   #565B66;
+    --dark-1:   #6B768A;
+
+    --mid-grey: #D6D6D6;
+    --light-3:  #EFEFEF;
+    --light-2:  #F5F5F5;
+    --light-1:  #F9F9F9;
+    --white:    #FFFFFF;
+
+    --positive: #008542;
+    --warning:  #E58A00;
+    --negative: #CC2200;
+    --info:     #295FCC;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Lato', Arial, sans-serif;
+    background: var(--light-2);
+    color: var(--dark-3);
+    min-height: 100vh;
+  }
+
+  /* ===== Header ===== */
+  .header {
+    background: var(--white);
+    border-bottom: 1px solid var(--mid-grey);
+    padding: 16px 24px;
+  }
+  .header-inner {
+    max-width: 720px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .logo {
+    font-weight: 900;
+    font-size: 24px;
+    color: var(--brand-01);
+    letter-spacing: -0.5px;
+    text-decoration: none;
+  }
+  .header-divider {
+    width: 1px;
+    height: 24px;
+    background: var(--mid-grey);
+  }
+  .header-title {
+    font-size: 14px;
+    color: var(--dark-2);
+  }
+
+  /* ===== Layout ===== */
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 24px 64px;
+  }
+
+  h1 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .subtitle {
+    font-size: 14px;
+    color: var(--dark-2);
+    margin-bottom: 32px;
+    line-height: 1.5;
+  }
+
+  /* ===== Card ===== */
+  .card {
+    background: var(--white);
+    border: 1px solid var(--mid-grey);
+    border-radius: 4px;
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+
+  /* ===== Form ===== */
+  fieldset {
+    border: none;
+    margin-bottom: 24px;
+  }
+  legend {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--dark-2);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+  }
+  .radio-group {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .radio-option {
+    flex: 1;
+    min-width: 200px;
+  }
+  .radio-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+  }
+  .radio-option label {
+    display: block;
+    padding: 12px 16px;
+    border: 1px solid var(--mid-grey);
+    border-radius: 4px;
+    background: var(--light-1);
+    font-size: 14px;
+    cursor: pointer;
+    text-align: center;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .radio-option input[type="radio"]:checked + label {
+    border-color: var(--brand-01);
+    background: var(--white);
+    color: var(--brand-01);
+    font-weight: 700;
+    box-shadow: inset 0 0 0 1px var(--brand-01);
+  }
+  .radio-option input[type="radio"]:focus-visible + label {
+    outline: 2px solid var(--info);
+    outline-offset: 2px;
+  }
+
+  .field {
+    margin-bottom: 24px;
+  }
+  .field label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--dark-2);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+  .input-wrapper {
+    position: relative;
+  }
+  .input-prefix {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: var(--dark-1);
+    pointer-events: none;
+  }
+  input[type="text"].money {
+    width: 100%;
+    padding: 14px 16px 14px 48px;
+    font-family: 'Lato', Arial, sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--dark-3);
+    background: var(--light-1);
+    border: 1px solid var(--mid-grey);
+    border-radius: 4px;
+    transition: border-color 0.15s;
+  }
+  input[type="text"].money::placeholder {
+    color: var(--dark-1);
+    font-weight: 400;
+  }
+  input[type="text"].money:focus {
+    outline: 2px solid var(--info);
+    outline-offset: -1px;
+    border-color: var(--info);
+  }
+  input[type="text"].money.invalid {
+    border-color: var(--negative);
+    outline-color: var(--negative);
+  }
+  .field-error {
+    display: none;
+    font-size: 13px;
+    color: var(--negative);
+    margin-top: 6px;
+  }
+  .field-error.visible { display: block; }
+  .field-hint {
+    font-size: 13px;
+    color: var(--dark-1);
+    margin-top: 6px;
+  }
+
+  /* ===== Button ===== */
+  .btn-primary {
+    width: 100%;
+    padding: 14px 24px;
+    font-family: 'Lato', Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--white);
+    background: var(--brand-01);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .btn-primary:hover { background: var(--brand-02); }
+  .btn-primary:focus-visible {
+    outline: 2px solid var(--info);
+    outline-offset: 2px;
+  }
+
+  /* ===== Results ===== */
+  .results { display: none; }
+  .results.visible { display: block; }
+
+  .banner {
+    display: none;
+    padding: 12px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 24px;
+    border: 1px solid;
+  }
+  .banner.visible { display: block; }
+  .banner-info {
+    background: #EDF2FC;
+    border-color: var(--info);
+    color: var(--dark-3);
+  }
+  .banner-info strong { color: var(--info); }
+
+  .result-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .result-item {
+    background: var(--light-3);
+    border-radius: 4px;
+    padding: 16px;
+  }
+  .result-item.highlight {
+    background: var(--brand-01);
+  }
+  .result-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--dark-2);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  .result-item.highlight .result-label { color: rgba(255,255,255,0.85); }
+  .result-value {
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--dark-3);
+  }
+  .result-item.highlight .result-value { color: var(--white); }
+  .result-detail {
+    font-size: 13px;
+    color: var(--dark-2);
+    margin-top: 4px;
+  }
+  .result-item.highlight .result-detail { color: rgba(255,255,255,0.75); }
+
+  .result-meta {
+    font-size: 13px;
+    color: var(--dark-2);
+    line-height: 1.6;
+    border-top: 1px solid var(--mid-grey);
+    padding-top: 16px;
+  }
+
+  .legal-note {
+    font-size: 13px;
+    color: var(--dark-1);
+    line-height: 1.6;
+  }
+  .legal-note strong { color: var(--dark-2); }
+
+  /* ===== Responsivo ===== */
+  @media (max-width: 671px) {
+    .container { padding: 24px 16px 48px; }
+    .card { padding: 16px; }
+    .result-grid { grid-template-columns: 1fr; }
+    .radio-option { min-width: 100%; }
+    h1 { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <a href="index.html" class="logo" aria-label="JBC Contabilidade — voltar ao painel">JBC</a>
+    <div class="header-divider" aria-hidden="true"></div>
+    <span class="header-title">Micro Sistemas · Departamento Fiscal</span>
+  </div>
+</header>
+
+<main class="container">
+  <h1>IRRF sobre Distribuição de Lucros</h1>
+  <p class="subtitle">Calcula a retenção de 10% sobre distribuições de lucros e dividendos acima de R$&nbsp;50.000,00 mensais pagos pela mesma pessoa jurídica à mesma pessoa física (Lei nº 15.270/2025).</p>
+
+  <div class="card">
+    <fieldset>
+      <legend>Sentido do cálculo</legend>
+      <div class="radio-group" role="radiogroup">
+        <div class="radio-option">
+          <input type="radio" id="modo-liquido" name="modo" value="liquido" checked>
+          <label for="modo-liquido">Tenho o valor líquido</label>
+        </div>
+        <div class="radio-option">
+          <input type="radio" id="modo-bruto" name="modo" value="bruto">
+          <label for="modo-bruto">Tenho o valor bruto</label>
+        </div>
+      </div>
+    </fieldset>
+
+    <div class="field">
+      <label for="valor" id="valor-label">Valor líquido da distribuição</label>
+      <div class="input-wrapper">
+        <span class="input-prefix" aria-hidden="true">R$</span>
+        <input type="text" inputmode="numeric" class="money" id="valor" placeholder="0,00" autocomplete="off" aria-describedby="valor-erro valor-hint">
+      </div>
+      <p class="field-error" id="valor-erro" role="alert">Informe um valor maior que zero.</p>
+      <p class="field-hint" id="valor-hint">Total mensal recebido pela pessoa física, da mesma empresa.</p>
+    </div>
+
+    <button type="button" class="btn-primary" id="calcular">Calcular retenção</button>
+  </div>
+
+  <section class="results" id="resultados" aria-live="polite">
+    <div class="banner banner-info" id="banner-isento">
+      <strong>Sem retenção.</strong> O valor bruto não ultrapassa R$&nbsp;50.000,00 no mês, portanto não há incidência do IRRF de 10%.
+    </div>
+
+    <div class="card">
+      <div class="result-grid">
+        <div class="result-item" id="card-bruto">
+          <p class="result-label">Valor bruto</p>
+          <p class="result-value" id="res-bruto">—</p>
+          <p class="result-detail" id="res-bruto-detalhe"></p>
+        </div>
+        <div class="result-item highlight">
+          <p class="result-label">Retenção IRRF (10%)</p>
+          <p class="result-value" id="res-retencao">—</p>
+          <p class="result-detail">Recolhimento na fonte</p>
+        </div>
+        <div class="result-item">
+          <p class="result-label">Valor líquido</p>
+          <p class="result-value" id="res-liquido">—</p>
+          <p class="result-detail">Recebido pelo sócio</p>
+        </div>
+        <div class="result-item">
+          <p class="result-label">Alíquota efetiva sobre o bruto</p>
+          <p class="result-value" id="res-aliquota">—</p>
+          <p class="result-detail" id="res-aliquota-detalhe"></p>
+        </div>
+      </div>
+      <p class="result-meta" id="res-meta"></p>
+    </div>
+  </section>
+
+  <div class="card">
+    <p class="legal-note">
+      <strong>Regras de incidência:</strong> a retenção de 10% aplica-se quando o total de lucros e dividendos pagos no mês, pela mesma pessoa jurídica à mesma pessoa física residente no Brasil, ultrapassa R$&nbsp;50.000,00 — e incide sobre o <strong>valor total</strong> da distribuição, não apenas sobre o excedente. Vigência a partir de 1º de janeiro de 2026 (Lei nº 15.270/2025). Distribuições de até R$&nbsp;50.000,00 no mês permanecem sem retenção.
+    </p>
+  </div>
+</main>
+
+<script>
+(function () {
+  var LIMITE = 50000;
+  var ALIQUOTA = 0.10;
+
+  var input = document.getElementById('valor');
+  var erro = document.getElementById('valor-erro');
+  var label = document.getElementById('valor-label');
+  var hint = document.getElementById('valor-hint');
+  var btn = document.getElementById('calcular');
+  var resultados = document.getElementById('resultados');
+  var bannerIsento = document.getElementById('banner-isento');
+
+  var fmt = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
+  var fmtPct = new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+  /* --- Máscara monetária: digita centavos da direita para a esquerda --- */
+  function mascara() {
+    var digitos = input.value.replace(/\D/g, '');
+    if (!digitos) { input.value = ''; return; }
+    digitos = digitos.replace(/^0+(?=\d)/, '');
+    var valor = parseInt(digitos, 10) / 100;
+    input.value = new Intl.NumberFormat('pt-BR', {
+      minimumFractionDigits: 2, maximumFractionDigits: 2
+    }).format(valor);
+  }
+  input.addEventListener('input', function () {
+    mascara();
+    if (parseValor() > 0) {
+      input.classList.remove('invalid');
+      erro.classList.remove('visible');
+    }
+  });
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') { e.preventDefault(); calcular(); }
+  });
+
+  function parseValor() {
+    var digitos = input.value.replace(/\D/g, '');
+    return digitos ? parseInt(digitos, 10) / 100 : 0;
+  }
+
+  /* --- Troca de sentido --- */
+  function getModo() {
+    return document.querySelector('input[name="modo"]:checked').value;
+  }
+  document.querySelectorAll('input[name="modo"]').forEach(function (radio) {
+    radio.addEventListener('change', function () {
+      if (getModo() === 'liquido') {
+        label.textContent = 'Valor líquido da distribuição';
+        hint.textContent = 'Total mensal recebido pela pessoa física, da mesma empresa.';
+      } else {
+        label.textContent = 'Valor bruto da distribuição';
+        hint.textContent = 'Total mensal distribuído pela empresa à pessoa física, antes da retenção.';
+      }
+      resultados.classList.remove('visible');
+    });
+  });
+
+  /* --- Cálculo --- */
+  function calcular() {
+    var valor = parseValor();
+    if (valor <= 0) {
+      input.classList.add('invalid');
+      erro.classList.add('visible');
+      input.focus();
+      resultados.classList.remove('visible');
+      return;
+    }
+
+    var bruto, liquido, retencao;
+
+    if (getModo() === 'liquido') {
+      liquido = valor;
+      if (liquido <= LIMITE) {
+        /* bruto igual ao líquido não ultrapassa o limite: sem retenção */
+        bruto = liquido;
+        retencao = 0;
+      } else {
+        bruto = liquido / (1 - ALIQUOTA);
+        retencao = bruto * ALIQUOTA;
+      }
+    } else {
+      bruto = valor;
+      if (bruto <= LIMITE) {
+        retencao = 0;
+      } else {
+        retencao = bruto * ALIQUOTA;
+      }
+      liquido = bruto - retencao;
+    }
+
+    var aliquotaEfetiva = retencao / bruto;
+
+    document.getElementById('res-bruto').textContent = fmt.format(bruto);
+    document.getElementById('res-bruto-detalhe').textContent =
+      getModo() === 'liquido' && retencao > 0 ? 'Líquido ÷ 0,90' : 'Base da distribuição';
+    document.getElementById('res-retencao').textContent = fmt.format(retencao);
+    document.getElementById('res-liquido').textContent = fmt.format(liquido);
+    document.getElementById('res-aliquota').textContent = fmtPct.format(aliquotaEfetiva * 100) + '%';
+    document.getElementById('res-aliquota-detalhe').textContent =
+      retencao > 0 ? 'Incidência sobre o valor total' : 'Abaixo do limite mensal';
+
+    bannerIsento.classList.toggle('visible', retencao === 0);
+
+    document.getElementById('res-meta').textContent = retencao > 0
+      ? 'Distribuição bruta de ' + fmt.format(bruto) + ' ultrapassa o limite de ' + fmt.format(LIMITE) +
+        ' no mês — IRRF de 10% sobre o valor total: ' + fmt.format(retencao) + '.'
+      : 'Distribuição bruta de ' + fmt.format(bruto) + ' está dentro do limite mensal de ' + fmt.format(LIMITE) + ' — sem retenção na fonte.';
+
+    resultados.classList.add('visible');
+  }
+
+  btn.addEventListener('click', calcular);
+})();
+</script>
+
+</body>
+</html>
